@@ -33,5 +33,15 @@ export type PlanetsType = {
 
 export type PlanetsContextType = {
   planets: PlanetsType[],
-  setPlanets: (newPlanets: PlanetsType[]) => void;
+  filterPlanets: PlanetsType[],
+  setPlanets?: (newPlanets: PlanetsType[]) => void;
+  setFilterPlanets: (newPlanets: PlanetsType[]) => void;
+};
+
+export type FilmType = {
+  filterPlanet: string;
+};
+
+export type FormType = {
+  filterPlanet: string;
 };
