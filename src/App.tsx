@@ -3,9 +3,10 @@ import Table from './components/Table';
 import { fetchPlanets } from './services/fetchPlanets';
 import './App.css';
 import PlanetsContext from './context/PlanetsContext';
+import { PlanetsType } from './types';
 
 function App() {
-  const [planets, setPlanets] = useState([]);
+  const [planets, setPlanets] = useState<PlanetsType[]>([]);
 
   useEffect(() => {
     fetchPlanets().then((planetsData) => {

@@ -10,6 +10,5 @@ export const fetchPlanets = async () => {
     return deletedResidents;
   });
 
-  // console.log('Results', filteredResults);
   return filteredResults;
 };

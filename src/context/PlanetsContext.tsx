@@ -1,7 +1,7 @@
 import { createContext } from 'react';
-// import { PlanetsContextType } from '../types';
+import { PlanetsContextType } from '../types';
 
-const PlanetsContext = createContext<any>({
+const PlanetsContext = createContext<PlanetsContextType>({
   planets: [],
   setPlanets: () => {},
 });

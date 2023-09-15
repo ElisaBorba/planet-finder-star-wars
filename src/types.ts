@@ -31,7 +31,7 @@ export type PlanetsType = {
   url: string;
 };
 
-// export type PlanetsContextType = {
-//   planets: PlanetsType[],
-//   setPlanets: (newPlanets: PlanetsType[]) => void;
-// };
+export type PlanetsContextType = {
+  planets: PlanetsType[],
+  setPlanets: (newPlanets: PlanetsType[]) => void;
+};
