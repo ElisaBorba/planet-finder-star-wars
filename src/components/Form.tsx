@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   filterPlanet: '',
 };
 
-const INITIAL_STATE_FORM = {
+const INITIAL_STATE_FORM: FormType = {
   column: 'population',
   operator: 'maior que',
   valueNumber: 0,
@@ -19,14 +19,8 @@ const INITIAL_STATE_FORM = {
 function Form() {
   const [planetInput, setPlanetInput] = useState<InputFilterType>(INITIAL_STATE);
   const [formInput, setFormInput] = useState<FormType>(INITIAL_STATE_FORM);
-
   const { planets, filteredPlanets, setFilteredPlanets } = useContext(PlanetsContext);
-
-  console.log('formInput', formInput);
   const { valueNumber, column, operator } = formInput;
-
-  // console.log('Planets', planets);
-  console.log('filteredPlanets', filteredPlanets);
 
   const handlePlanetNameChange = (
     { target }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -84,7 +78,7 @@ function Form() {
           <select
             id="column"
             name="column"
-            value={ formInput.column }
+            value={ column }
             onChange={ handleChange }
             data-testid="column-filter"
           >
@@ -101,7 +95,7 @@ function Form() {
           <select
             id="operator"
             name="operator"
-            value={ formInput.operator }
+            value={ operator }
             onChange={ handleChange }
             data-testid="comparison-filter"
           >
@@ -116,7 +110,7 @@ function Form() {
             type="text"
             id="valueNumber"
             name="valueNumber"
-            value={ formInput.valueNumber }
+            value={ valueNumber }
             onChange={ handleChange }
             data-testid="value-filter"
           />
