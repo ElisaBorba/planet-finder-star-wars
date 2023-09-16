@@ -9,13 +9,13 @@ import Form from './components/Form';
 function App() {
   const [planets, setPlanets] = useState<PlanetsType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filterPlanets, setFilterPlanets] = useState<PlanetsType[]>([]);
+  const [filteredPlanets, setFilteredPlanets] = useState<PlanetsType[]>([]);
 
   useEffect(() => {
     fetchPlanets()
       .then((planetsData) => {
         setPlanets(planetsData);
-        setFilterPlanets(planetsData);
+        setFilteredPlanets(planetsData);
         setLoading(false);
       })
       .catch((error) => {
@@ -28,8 +28,8 @@ function App() {
     <PlanetsContext.Provider
       value={ {
         planets,
-        filterPlanets,
-        setFilterPlanets } }
+        filteredPlanets,
+        setFilteredPlanets } }
     >
       {loading ? (
         <div>Carregando...</div>

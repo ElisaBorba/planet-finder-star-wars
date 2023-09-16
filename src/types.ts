@@ -33,15 +33,20 @@ export type PlanetsType = {
 
 export type PlanetsContextType = {
   planets: PlanetsType[],
-  filterPlanets: PlanetsType[],
+  filteredPlanets: PlanetsType[],
   setPlanets?: (newPlanets: PlanetsType[]) => void;
-  setFilterPlanets: (newPlanets: PlanetsType[]) => void;
-};
-
-export type FilmType = {
-  filterPlanet: string;
+  setFilteredPlanets: (newPlanets: PlanetsType[]) => void;
 };
 
 export type FormType = {
-  filterPlanet: string;
+  column: 'population' | 'orbital_period'
+  | 'diameter' | 'rotation_period' | 'surface_water';
+  operator: string;
+  valueNumber: number;
 };
+
+// export type FormType = {
+//   column: string;
+//   operator: string;
+//   valueNumber: number;
+// };
