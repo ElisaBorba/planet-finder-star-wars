@@ -11,7 +11,8 @@
     "@testing-library/user-event": "^13",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0"
   },
   "scripts": {
     "cy": "env CY_CLI=true cypress run",

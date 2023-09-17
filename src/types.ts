@@ -44,9 +44,3 @@ export type FormType = {
   operator: string;
   valueNumber: number;
 };
-
-// export type FormType = {
-//   column: string;
-//   operator: string;
-//   valueNumber: number;
-// };
