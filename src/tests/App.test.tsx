@@ -37,8 +37,6 @@ describe('Verifica se a requisição é chamada corretamente e se existe todos o
     );
 
     await waitFor(() => screen.getByText(/carregando\.\.\./i));
-
-  
     const firstPlanet = screen.getByRole('cell', {  name: /tatooine/i})
     const table = screen.getByRole('table')
     const colunaTable = screen.getByText(/coluna/i)

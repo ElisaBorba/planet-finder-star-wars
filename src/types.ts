@@ -36,11 +36,13 @@ export type PlanetsContextType = {
   filteredPlanets: PlanetsType[],
   setPlanets?: (newPlanets: PlanetsType[]) => void;
   setFilteredPlanets: (newPlanets: PlanetsType[]) => void;
+  filterByNumericValues: FormType[]
+  setFilterByNumericValues:(selectedFiltersInForm: FormType[]) => void;
 };
 
 export type FormType = {
   column: 'population' | 'orbital_period'
   | 'diameter' | 'rotation_period' | 'surface_water';
-  operator: string;
+  comparison: string;
   valueNumber: number;
 };

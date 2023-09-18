@@ -3,13 +3,14 @@ import Table from './components/Table';
 import { fetchPlanets } from './services/fetchPlanets';
 import './App.css';
 import PlanetsContext from './context/PlanetsContext';
-import { PlanetsType } from './types';
+import { PlanetsType, FormType } from './types';
 import Form from './components/Form';
 
 function App() {
   const [planets, setPlanets] = useState<PlanetsType[]>([]);
   const [loading, setLoading] = useState(true);
   const [filteredPlanets, setFilteredPlanets] = useState<PlanetsType[]>([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState<FormType[]>([]);
 
   useEffect(() => {
     fetchPlanets()
@@ -29,7 +30,10 @@ function App() {
       value={ {
         planets,
         filteredPlanets,
-        setFilteredPlanets } }
+        setFilteredPlanets,
+        filterByNumericValues,
+        setFilterByNumericValues,
+      } }
     >
       {loading ? (
         <div>Carregando...</div>
