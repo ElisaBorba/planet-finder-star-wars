@@ -31,6 +31,8 @@ function Form() {
     setFilterByNumericValues } = useContext(PlanetsContext);
   const [columnsArray, setColumnsArray] = useState<string[]>(columnsName);
 
+  console.log('columnsArray', columnsArray);
+
   const { valueNumber, column, comparison } = formInput;
 
   const handlePlanetNameChange = (
@@ -85,6 +87,24 @@ function Form() {
 
     setFilteredPlanets(filteredByForm);
     console.log('filteredByForm', filteredByForm);
+  };
+
+  const handleFilterClick = (numericValue: FormType) => {
+    const filterColumns = filterByNumericValues
+      .filter((filter) => numericValue.column !== filter.column);
+
+    const updateColumns = [...columnsArray, numericValue.column];
+
+    setColumnsArray(updateColumns);
+    setFilterByNumericValues(filterColumns);
+    setFilteredPlanets([...planets]);
+  };
+
+  const handleFilterAllClick = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setColumnsArray([...columnsName]);
+    setFilterByNumericValues([]);
+    setFilteredPlanets([...planets]);
   };
 
   return (
@@ -152,6 +172,25 @@ function Form() {
           data-testid="button-filter"
         >
           Filtrar
+        </button>
+        <div>
+          {filterByNumericValues.map((numericValue) => (
+            <p data-testid="filter" key={ numericValue.column }>
+              {`${numericValue.column} ${numericValue.comparison}
+            ${numericValue.valueNumber} `}
+              <button
+                onClick={ () => handleFilterClick(numericValue) }
+              >
+                Apagar
+              </button>
+            </p>
+          ))}
+        </div>
+        <button
+          data-testid="button-remove-filters"
+          onClick={ handleFilterAllClick }
+        >
+          Remover todas filtragens
         </button>
       </div>
     </form>
