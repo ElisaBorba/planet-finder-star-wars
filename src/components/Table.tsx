@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import { PlanetsType } from '../types';
 
 function Table() {
   const { filteredPlanets } = useContext(PlanetsContext);
@@ -25,7 +26,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredPlanets.map((planet:any) => {
+          {filteredPlanets.map((planet: PlanetsType) => {
             return (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
@@ -38,8 +39,8 @@ function Table() {
                 <td>{planet.surface_water}</td>
                 <td>{planet.population}</td>
                 <td>
-                  {planet.films.map((film: any) => (
-                    <p key={ film }>{film}</p>
+                  {planet.films.map((film: string, index: number) => (
+                    <p key={ index }>{film}</p>
                   ))}
                 </td>
                 <td>{planet.created}</td>

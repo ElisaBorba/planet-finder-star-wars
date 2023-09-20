@@ -27,13 +27,15 @@ const columnsName = [
 function Form() {
   const [planetInput, setPlanetInput] = useState<InputFilterType>(INITIAL_STATE);
   const [formInput, setFormInput] = useState<FormType>(INITIAL_STATE_FORM);
+  const [columnsArray, setColumnsArray] = useState<string[]>(columnsName);
   const { planets, filteredPlanets, setFilteredPlanets, filterByNumericValues,
     setFilterByNumericValues } = useContext(PlanetsContext);
-  const [columnsArray, setColumnsArray] = useState<string[]>(columnsName);
-
-  console.log('columnsArray', columnsArray);
-
   const { valueNumber, column, comparison } = formInput;
+
+  console.log('filteredPlanets', filteredPlanets);
+  console.log('columnsArray', columnsArray);
+  console.log('filterByNumericValues', filterByNumericValues);
+  // console.log('valueNumber', valueNumber);
 
   const handlePlanetNameChange = (
     { target }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -54,7 +56,6 @@ function Form() {
   };
 
   useEffect(() => {
-    console.log('filterByNumericValues', filterByNumericValues);
   }, [filterByNumericValues]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,8 +69,23 @@ function Form() {
 
     const updatedFilterByNumericValues = [...filterByNumericValues, newFilter];
 
-    setFilterByNumericValues(updatedFilterByNumericValues);
-    console.log('filterByNumericValues', filterByNumericValues);
+    const filterColumns = columnsArray.filter((col) => col !== column);
+
+    // let filteredPlanetsByNumericValues = [...filteredPlanets];
+
+    // filterByNumericValues.forEach((filter) => {
+    //   filteredPlanetsByNumericValues = filteredPlanetsByNumericValues.filter((planet) => {
+    //     if (filter.comparison === 'maior que') {
+    //       return parseFloat(planet[filter.column]) > Number(filter.valueNumber);
+    //     }
+    //     if (filter.comparison === 'menor que') {
+    //       return parseFloat(planet[filter.column]) < Number(filter.valueNumber);
+    //     }
+    //     if (filter.comparison === 'igual a') {
+    //       return parseFloat(planet[filter.column]) === Number(filter.valueNumber);
+    //     }
+    //     return true;
+    //   });
 
     const filteredByForm = filteredPlanets.filter((planet) => {
       const planetByColumn = parseFloat(planet[column]);
@@ -77,16 +93,17 @@ function Form() {
 
       return (
         (comparison === 'maior que' && planetByColumn > valueNum)
-        || (comparison === 'menor que' && planetByColumn < valueNum)
-        || (comparison === 'igual a' && planetByColumn === valueNum)
+          || (comparison === 'menor que' && planetByColumn < valueNum)
+          || (comparison === 'igual a' && planetByColumn === valueNum)
       );
     });
 
-    const filterColumns = columnsArray.filter((col) => col !== column);
-    setColumnsArray(filterColumns);
-
     setFilteredPlanets(filteredByForm);
-    console.log('filteredByForm', filteredByForm);
+    // setFilteredPlanets(filteredPlanetsByNumericValues);
+    setFilterByNumericValues(updatedFilterByNumericValues);
+    setColumnsArray(filterColumns);
+    setFormInput({ ...formInput, column: filterColumns[0] });
+    console.log('columnsArray', columnsArray);
   };
 
   const handleFilterClick = (numericValue: FormType) => {
@@ -132,8 +149,8 @@ function Form() {
             onChange={ handleChange }
             data-testid="column-filter"
           >
-            {columnsArray.map((col) => (
-              <option key={ col } value={ col }>
+            {columnsArray.map((col, index) => (
+              <option key={ index } value={ col }>
                 {col}
               </option>
             ))}
@@ -174,15 +191,11 @@ function Form() {
           Filtrar
         </button>
         <div>
-          {filterByNumericValues.map((numericValue) => (
-            <p data-testid="filter" key={ numericValue.column }>
+          {filterByNumericValues && filterByNumericValues.map((numericValue, index) => (
+            <p data-testid="filter" key={ index }>
               {`${numericValue.column} ${numericValue.comparison}
             ${numericValue.valueNumber} `}
-              <button
-                onClick={ () => handleFilterClick(numericValue) }
-              >
-                Apagar
-              </button>
+              <button onClick={ () => handleFilterClick(numericValue) }>Apagar</button>
             </p>
           ))}
         </div>
