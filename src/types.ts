@@ -33,11 +33,11 @@ export type PlanetsType = {
 
 export type PlanetsContextType = {
   planets: PlanetsType[],
-  filteredPlanets: PlanetsType[],
   setPlanets?: (newPlanets: PlanetsType[]) => void;
-  setFilteredPlanets: (newPlanets: PlanetsType[]) => void;
   filterByNumericValues: FormType[]
   setFilterByNumericValues:(selectedFiltersInForm: FormType[]) => void;
+  planetInput: string;
+  setPlanetInput: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export type FormType = {

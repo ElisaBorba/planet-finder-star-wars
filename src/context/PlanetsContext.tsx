@@ -4,10 +4,10 @@ import { PlanetsContextType } from '../types';
 const PlanetsContext = createContext<PlanetsContextType>({
   planets: [],
   setPlanets: () => {},
-  filteredPlanets: [],
-  setFilteredPlanets: () => {},
   filterByNumericValues: [],
   setFilterByNumericValues: () => {},
+  planetInput: '',
+  setPlanetInput: () => {},
 });
 
 export default PlanetsContext;

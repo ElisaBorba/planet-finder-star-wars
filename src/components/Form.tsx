@@ -2,14 +2,6 @@ import { useContext, useState, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import { FormType } from '../types';
 
-type InputFilterType = {
-  filterPlanet: string;
-};
-
-const INITIAL_STATE = {
-  filterPlanet: '',
-};
-
 const INITIAL_STATE_FORM: FormType = {
   column: 'population',
   comparison: 'maior que',
@@ -25,28 +17,14 @@ const columnsName = [
 ];
 
 function Form() {
-  const [planetInput, setPlanetInput] = useState<InputFilterType>(INITIAL_STATE);
   const [formInput, setFormInput] = useState<FormType>(INITIAL_STATE_FORM);
   const [columnsArray, setColumnsArray] = useState<string[]>(columnsName);
-  const { planets, filteredPlanets, setFilteredPlanets, filterByNumericValues,
-    setFilterByNumericValues } = useContext(PlanetsContext);
+  const {
+    filterByNumericValues,
+    setFilterByNumericValues,
+    planetInput,
+    setPlanetInput } = useContext(PlanetsContext);
   const { valueNumber, column, comparison } = formInput;
-
-  console.log('filteredPlanets', filteredPlanets);
-  console.log('columnsArray', columnsArray);
-  console.log('filterByNumericValues', filterByNumericValues);
-  // console.log('valueNumber', valueNumber);
-
-  const handlePlanetNameChange = (
-    { target }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { value } = target;
-    setPlanetInput({ ...planetInput, filterPlanet: value });
-
-    const filterPlanets = planets
-      .filter((planet) => planet.name.toLowerCase().includes(value.toLowerCase()));
-    setFilteredPlanets(filterPlanets);
-  };
 
   const handleChange = (
     { target }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -58,7 +36,7 @@ function Form() {
   useEffect(() => {
   }, [filterByNumericValues]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleFilter = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newFilter: FormType = {
@@ -68,45 +46,14 @@ function Form() {
     };
 
     const updatedFilterByNumericValues = [...filterByNumericValues, newFilter];
-
     const filterColumns = columnsArray.filter((col) => col !== column);
 
-    // let filteredPlanetsByNumericValues = [...filteredPlanets];
-
-    // filterByNumericValues.forEach((filter) => {
-    //   filteredPlanetsByNumericValues = filteredPlanetsByNumericValues.filter((planet) => {
-    //     if (filter.comparison === 'maior que') {
-    //       return parseFloat(planet[filter.column]) > Number(filter.valueNumber);
-    //     }
-    //     if (filter.comparison === 'menor que') {
-    //       return parseFloat(planet[filter.column]) < Number(filter.valueNumber);
-    //     }
-    //     if (filter.comparison === 'igual a') {
-    //       return parseFloat(planet[filter.column]) === Number(filter.valueNumber);
-    //     }
-    //     return true;
-    //   });
-
-    const filteredByForm = filteredPlanets.filter((planet) => {
-      const planetByColumn = parseFloat(planet[column]);
-      const valueNum = Number(valueNumber);
-
-      return (
-        (comparison === 'maior que' && planetByColumn > valueNum)
-          || (comparison === 'menor que' && planetByColumn < valueNum)
-          || (comparison === 'igual a' && planetByColumn === valueNum)
-      );
-    });
-
-    setFilteredPlanets(filteredByForm);
-    // setFilteredPlanets(filteredPlanetsByNumericValues);
     setFilterByNumericValues(updatedFilterByNumericValues);
     setColumnsArray(filterColumns);
     setFormInput({ ...formInput, column: filterColumns[0] });
-    console.log('columnsArray', columnsArray);
   };
 
-  const handleFilterClick = (numericValue: FormType) => {
+  const handleRemoveFilter = (numericValue: FormType) => {
     const filterColumns = filterByNumericValues
       .filter((filter) => numericValue.column !== filter.column);
 
@@ -114,14 +61,12 @@ function Form() {
 
     setColumnsArray(updateColumns);
     setFilterByNumericValues(filterColumns);
-    setFilteredPlanets([...planets]);
   };
 
   const handleFilterAllClick = async (e: React.FormEvent) => {
     e.preventDefault();
     setColumnsArray([...columnsName]);
     setFilterByNumericValues([]);
-    setFilteredPlanets([...planets]);
   };
 
   return (
@@ -132,8 +77,8 @@ function Form() {
             type="text"
             id="filterPlanet"
             name="filterPlanet"
-            value={ planetInput.filterPlanet }
-            onChange={ handlePlanetNameChange }
+            value={ planetInput }
+            onChange={ (e) => setPlanetInput(e.target.value) }
             data-testid="name-filter"
             placeholder="Search planet"
           />
@@ -145,7 +90,7 @@ function Form() {
           <select
             id="column"
             name="column"
-            value={ column }
+            value={ formInput.column }
             onChange={ handleChange }
             data-testid="column-filter"
           >
@@ -184,8 +129,7 @@ function Form() {
         </label>
 
         <button
-          type="submit"
-          onClick={ handleSubmit }
+          onClick={ handleFilter }
           data-testid="button-filter"
         >
           Filtrar
@@ -195,7 +139,13 @@ function Form() {
             <p data-testid="filter" key={ index }>
               {`${numericValue.column} ${numericValue.comparison}
             ${numericValue.valueNumber} `}
-              <button onClick={ () => handleFilterClick(numericValue) }>Apagar</button>
+              <button
+                type="button"
+                onClick={ () => handleRemoveFilter(numericValue) }
+              >
+                Apagar
+
+              </button>
             </p>
           ))}
         </div>

@@ -9,14 +9,13 @@ import Form from './components/Form';
 function App() {
   const [planets, setPlanets] = useState<PlanetsType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filteredPlanets, setFilteredPlanets] = useState<PlanetsType[]>([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState<FormType[]>([]);
+  const [planetInput, setPlanetInput] = useState<string>('');
 
   useEffect(() => {
     fetchPlanets()
       .then((planetsData) => {
         setPlanets(planetsData);
-        setFilteredPlanets(planetsData);
         setLoading(false);
       })
       .catch((error) => {
@@ -28,9 +27,9 @@ function App() {
   return (
     <PlanetsContext.Provider
       value={ {
+        planetInput,
+        setPlanetInput,
         planets,
-        filteredPlanets,
-        setFilteredPlanets,
         filterByNumericValues,
         setFilterByNumericValues,
       } }

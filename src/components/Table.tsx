@@ -2,8 +2,25 @@ import { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import { PlanetsType } from '../types';
 
+const comparations: { [key:string]: (a: string, b: number) => boolean } = {
+  'maior que': (a, b) => (parseFloat(a) > Number(b)),
+  'menor que': (a, b) => (parseFloat(a) < Number(b)),
+  'igual a': (a, b) => (parseFloat(a) === Number(b)),
+};
+
 function Table() {
-  const { filteredPlanets } = useContext(PlanetsContext);
+  const { planetInput, planets, filterByNumericValues } = useContext(PlanetsContext);
+  const filteredByName = planets.filter((planet) => (
+    planet.name.toLowerCase().includes(planetInput)));
+
+  const filteredByNumber = filteredByName.filter((planet) => {
+    if (filterByNumericValues.length === 0) return true;
+
+    return filterByNumericValues.every((filter) => comparations[filter.comparison](
+      planet[filter.column],
+      filter.valueNumber,
+    ));
+  });
 
   return (
     <div>
@@ -26,7 +43,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredPlanets.map((planet: PlanetsType) => {
+          {filteredByNumber.map((planet: PlanetsType) => {
             return (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
