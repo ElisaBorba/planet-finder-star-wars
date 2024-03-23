@@ -144,7 +144,6 @@ function Form() {
                 onClick={ () => handleRemoveFilter(numericValue) }
               >
                 Apagar
-
               </button>
             </p>
           ))}
